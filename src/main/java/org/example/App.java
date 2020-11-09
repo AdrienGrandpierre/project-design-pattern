@@ -3,6 +3,7 @@ package org.example;
 import org.example.core.Conf;
 import org.example.core.Template;
 import org.example.middlewares.LoggerMiddleware;
+import org.example.utils.TestController;
 import spark.Spark;
 
 import java.util.HashMap;
@@ -11,9 +12,13 @@ public class App {
     public static void main(String[] args) {
         initialize();
 
+        TestController testController = new TestController();
+
         Spark.get("/", (req, res) -> {
             return Template.render("home.html", new HashMap<>());
         });
+
+        Spark.get("/test", (req, res) -> testController.detail(req, res));
     }
 
     static void initialize() {
