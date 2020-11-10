@@ -30,7 +30,7 @@ public class Light extends Thing {
         }
     }
 
-    public void setLightChangedListener(OnLightChangedListener lightChangedListener) {
-        lightChangedListener = lightChangedListener;
+    public void setLightChangedListener(OnLightChangedListener listener) {
+        lightChangedListener = listener;
     }
 }
