@@ -3,23 +3,36 @@ package org.example;
 import org.example.core.Conf;
 import org.example.core.Template;
 import org.example.middlewares.LoggerMiddleware;
+import org.example.models.HomeSystem;
+import org.example.models.Light;
 import spark.Spark;
 
 public class App {
+
+
     public static void main(String[] args) {
         initialize();
 
-//        TestController testController = new TestController();
+        HomeSystem homeSystem = HomeSystem.getInstance();
+        Light light = new Light();
+        light.setName("Living room");
+        light.setLightChangedListener(homeSystem);
+        homeSystem.addThings(light);
+
+        light = new Light();
+        light.setName("Kitchen");
+        light.setLightChangedListener(homeSystem);
+        homeSystem.addThings(light);
 
         HomeSytemController homeSytemController = new HomeSytemController();
+        ThingController thingController = new ThingController();
 
         Spark.get("/", (req, res) -> homeSytemController.list(req, res));
+        Spark.get("/things/:id", (req, res) -> thingController.detail(req, res));
 
 //        Spark.get("/", (req, res) -> {
 //            return Template.render("home.html", new HashMap<>());
 //        });
-//
-//        Spark.get("/test", (req, res) -> testController.detail(req, res));
     }
 
     static void initialize() {
