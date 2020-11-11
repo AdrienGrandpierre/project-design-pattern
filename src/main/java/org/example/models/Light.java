@@ -24,8 +24,13 @@ public class Light extends Thing {
     }
 
     public void setLightOn(boolean lightOn) {
+
+        if (state == State.UNREACHABLE) {
+            return;
+        }
+
         isLightOn = lightOn;
-        if (lightChangedListener != null){
+        if (lightChangedListener != null) {
             lightChangedListener.onLightChanged(this);
         }
     }

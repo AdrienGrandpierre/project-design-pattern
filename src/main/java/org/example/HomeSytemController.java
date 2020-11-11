@@ -11,10 +11,15 @@ import java.util.Map;
 
 public class HomeSytemController {
 
+    private final HomeSystem homeSystem;
+    public HomeSytemController(HomeSystem homeSystem) {
+        this.homeSystem = homeSystem;
+    }
+
     public String list(Request req, Response res){
 
         Map<String, Object> model = new HashMap<>();
-        model.put("things", HomeSystem.getInstance().getThingsList());
+        model.put("things", homeSystem.getThingsList());
         return Template.render("home.html",model);
     }
 }

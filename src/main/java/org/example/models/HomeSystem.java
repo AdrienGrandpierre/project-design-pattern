@@ -7,20 +7,28 @@ import java.util.List;
 
 public class HomeSystem implements Light.OnLightChangedListener {
 
-    private final List<Thing> thingsList;
-
-    private static HomeSystem INSTANCE;
-    private final List<String> logs = new ArrayList<>();
-
-    public static HomeSystem getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new HomeSystem();
-        }
-        return INSTANCE;
+    public enum State{
+        ON,
+        OFF,
     }
 
-    private HomeSystem() {
+    private State state;
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    private final List<Thing> thingsList;
+    private final List<String> logs = new ArrayList<>();
+
+
+    public HomeSystem() {
         this.thingsList = new ArrayList<>();
+        this.state = State.ON;
     }
 
     public List<Thing> getThingsList() {
@@ -36,5 +44,26 @@ public class HomeSystem implements Light.OnLightChangedListener {
         String message = "HomeSystem - Light " + light.getName() + " updated. light on = " + light.isLightOn();
         System.out.println(message);
         logs.add(message);
+    }
+
+    public void toggleAllLights(boolean isLightOn) {
+        if (this.state == State.OFF){
+            return;
+        }
+
+        for (Light l : getLights()){
+            l.setLightOn(isLightOn);
+        }
+    }
+
+    public List<Light> getLights(){
+        List<Light> list = new ArrayList<>();
+
+        for (Thing t : thingsList){
+            if (t instanceof  Light){
+                list.add((Light) t);
+            }
+        }
+        return list;
     }
 }

@@ -5,6 +5,7 @@ import org.example.core.Template;
 import org.example.middlewares.LoggerMiddleware;
 import org.example.models.HomeSystem;
 import org.example.models.Light;
+import org.example.models.Thermostat;
 import spark.Spark;
 
 public class App {
@@ -13,7 +14,8 @@ public class App {
     public static void main(String[] args) {
         initialize();
 
-        HomeSystem homeSystem = HomeSystem.getInstance();
+        HomeSystem homeSystem = new HomeSystem();
+
         Light light = new Light();
         light.setName("Living room");
         light.setLightChangedListener(homeSystem);
@@ -24,8 +26,13 @@ public class App {
         light.setLightChangedListener(homeSystem);
         homeSystem.addThings(light);
 
-        HomeSytemController homeSytemController = new HomeSytemController();
-        ThingController thingController = new ThingController();
+        Thermostat thermostat = new Thermostat(5,20);
+        thermostat.setName("Bedroom");
+        thermostat.setTemperature(12);
+        homeSystem.addThings(thermostat);
+
+        HomeSytemController homeSytemController = new HomeSytemController(homeSystem);
+        ThingController thingController = new ThingController(homeSystem);
 
         Spark.get("/", (req, res) -> homeSytemController.list(req, res));
         Spark.get("/things/:id", (req, res) -> thingController.detail(req, res));
