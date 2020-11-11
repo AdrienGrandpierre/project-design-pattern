@@ -3,13 +3,14 @@ import org.example.models.Thing;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class LightTest {
 
     private Light light;
 
     @Before
-    public void before(){
+    public void before() {
         light = new Light();
     }
 
@@ -28,5 +29,15 @@ public class LightTest {
 
         light.setLightOn(true);
         Assert.assertFalse(light.isLightOn());
+    }
+
+    @Test
+    public void setLightShouldTriggerListener() {
+        Light.OnLightChangedListener listener = Mockito.mock(Light.OnLightChangedListener.class);
+
+        light.setLightChangedListener(listener);
+        light.setLightOn(true);
+
+        Mockito.verify(listener).onLightChanged(light);
     }
 }

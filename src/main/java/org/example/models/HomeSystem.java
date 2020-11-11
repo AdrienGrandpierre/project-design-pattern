@@ -1,5 +1,6 @@
 package org.example.models;
 
+import org.example.SystemLogger;
 import org.example.models.Thing;
 
 import java.util.ArrayList;
@@ -11,7 +12,8 @@ public class HomeSystem implements Light.OnLightChangedListener {
         ON,
         OFF,
     }
-
+    private final List<Thing> thingsList;
+private final SystemLogger logger;
     private State state;
 
     public State getState() {
@@ -22,11 +24,8 @@ public class HomeSystem implements Light.OnLightChangedListener {
         this.state = state;
     }
 
-    private final List<Thing> thingsList;
-    private final List<String> logs = new ArrayList<>();
-
-
-    public HomeSystem() {
+    public HomeSystem(SystemLogger logger) {
+        this.logger = logger;
         this.thingsList = new ArrayList<>();
         this.state = State.ON;
     }
@@ -42,8 +41,7 @@ public class HomeSystem implements Light.OnLightChangedListener {
     @Override
     public void onLightChanged(Light light) {
         String message = "HomeSystem - Light " + light.getName() + " updated. light on = " + light.isLightOn();
-        System.out.println(message);
-        logs.add(message);
+        logger.addLog(message);
     }
 
     public void toggleAllLights(boolean isLightOn) {

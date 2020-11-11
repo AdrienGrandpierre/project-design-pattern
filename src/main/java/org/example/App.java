@@ -14,7 +14,8 @@ public class App {
     public static void main(String[] args) {
         initialize();
 
-        HomeSystem homeSystem = new HomeSystem();
+        SystemLogger logger = new SystemLogger();
+        HomeSystem homeSystem = new HomeSystem(logger);
 
         Light light = new Light();
         light.setName("Living room");
